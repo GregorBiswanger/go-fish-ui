@@ -1,0 +1,44 @@
+<div fxFill fxLayout>
+
+    <div fxFlex="10" fxFlex>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="space-around stretch" fxFlex="70">
+        <div>
+            <p>HIER KOMMT DIE SPIELINFO!</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center">
+            <div *ngFor="let card of computerPlayer.cards" fxFlex="5">
+                <img src="/assets/cards/purple_back.png" class="card">
+            </div>
+        </div>
+        <div>
+            <p>{{ computerPlayer.name }} (Computer) hat {{ computerPlayer.quartets.length / 4 }} Quartette.</p>
+        </div>
+        <div>
+            <p>{{ player.name }} hat {{ player.quartets.length / 4 }} Quartette.</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center">
+            <div *ngFor="let card of player.cards" fxFlex="5">
+                <img class="player-card" [ngClass]="selectedCardStyle(card)" [src]="card | cardToImagePath" (click)="selectCard(card)">
+            </div>
+        </div>
+        <div fxLayoutAlign="center">
+            <button *ngIf="selectedCard && isPlayerActive" (click)="askForValue()">Nach Karte fragen</button>
+        </div>
+        <div></div>
+    </div>
+    <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center" style="margin-top: -8%;">
+        <div *ngFor="let card of cardDeck" fxFlex="1">
+            <img src="/assets/cards/purple_back.png" class="card">
+        </div>
+    </div>
+    <div fxFlex="10">
+    </div>
+
+</div>
+<div *ngIf="isGameOver" class="game-over" fxFill fxLayout fxLayoutAlign="center center">
+    <div fxFlex="30" class="game-over__modal">
+        <h3>{{gameOverTitle}}</h3>
+        <p>{{gameOverState}}</p>
+    </div>
+</div>
