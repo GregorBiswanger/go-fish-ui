@@ -2,15 +2,31 @@
     width: 15vh;
 }
 
+.isPlayerActive .deck > div:last-child .card {
+    transition: margin-left 0.3s;
+    margin-left: 0;
+    cursor: pointer;
+
+    &:hover {
+        margin-left: 30px;
+    }
+}
+
+// TODO: apply BEM naming
+
 .player-card {
     @extend .card;
 
-    &:hover {
+    &--selected {
         box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         margin-top: -30px;
     }
+}
 
-    &--selected {
+.isPlayerActive .player-card {
+    cursor: pointer;
+    transition: margin-top 0.3s;
+    &:hover {
         box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         margin-top: -30px;
     }
@@ -25,8 +41,12 @@
     &__modal {
         background-color: rgb(78, 152, 250);
         border-radius: 25px;
-        border: 10px solid  rgb(158, 46, 158);;
+        border: 10px solid rgb(158, 46, 158);
         padding: 20px;
         height: 30vh;
     }
+}
+
+.game-info {
+    font-size: 28px;
 }

@@ -1,14 +1,17 @@
 import { Player } from './../models/Player';
 import { Injectable } from '@angular/core';
-import { Spiel, Spieler, SpielerTyp, SpielkartenFactory, Karte } from 'go-fish-core';
+import { Spiel, Spieler, SpielerTyp, SpielkartenFactory, Karte, Wert } from 'go-fish-core';
 import { Subject } from 'rxjs';
 import playerSchema from 'src/models/MorphismSchemas/playerSchema';
+import { mapWertToValue } from 'src/models/Mapper/mapWertToValue';
 import morphism from 'morphism';
 import Card from 'src/models/Card';
 import cardSchema from 'src/models/MorphismSchemas/cardSchema';
 import { tap, map } from 'rxjs/operators';
 import karteSchema from 'src/models/MorphismSchemas/karteSchema';
 import SpielEnde from 'go-fish-core/dist/domain-events/SpielEnde';
+import SpielerFragteNachWert from 'go-fish-core/dist/domain-events/SpielerFragteNachWert';
+import Value from 'src/models/Value';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +32,18 @@ export class GameService {
   private playerChangedSubject = new Subject<ChangedPlayer>();
 
   get samePlayerAgain() {
-    return this._spiel.gleicherSpielerNochmal;
+    return this._spiel.gleicherSpielerNochmal.pipe(
+      map<unknown, SamePlayerAgain>(() => ({ playerId: this._spiel.aktuellerSpielerId }))
+    );
+  }
+
+  get playerAskedForValue() {
+    return this._spiel.spielerFragteNachWert.pipe(
+      map<SpielerFragteNachWert, PlayerAskedForValue>(ereignis => ({
+        playerId: ereignis.spielerId,
+        value: mapWertToValue(ereignis.wert)
+      }))
+    );
   }
 
   get playerGetCards() {
@@ -92,6 +106,15 @@ export class GameService {
 
 export interface ChangedPlayer {
   playerId: string;
+}
+
+export interface SamePlayerAgain {
+  playerId: string;
+}
+
+export interface PlayerAskedForValue {
+  playerId: string;
+  value: Value;
 }
 
 export interface GameOver {

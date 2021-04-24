@@ -1,10 +1,10 @@
-<div fxFill fxLayout>
+<div [ngClass]="{ isPlayerActive: isPlayerActive }" fxFill fxLayout>
 
     <div fxFlex="10" fxFlex>
     </div>
     <div fxLayout="column" fxLayoutAlign="space-around stretch" fxFlex="70">
         <div>
-            <p>HIER KOMMT DIE SPIELINFO!</p>
+            <p class="game-info">{{gameInfo}}</p>
         </div>
         <div fxLayout="row" fxLayoutAlign="center">
             <div *ngFor="let card of computerPlayer.cards" fxFlex="5">
@@ -19,7 +19,8 @@
         </div>
         <div fxLayout="row" fxLayoutAlign="center">
             <div *ngFor="let card of player.cards" fxFlex="5">
-                <img class="player-card" [ngClass]="selectedCardStyle(card)" [src]="card | cardToImagePath" (click)="selectCard(card)">
+                <img class="player-card" [ngClass]="selectedCardStyle(card)" [src]="card | cardToImagePath"
+                    (click)="selectCard(card)">
             </div>
         </div>
         <div fxLayoutAlign="center">
@@ -27,9 +28,9 @@
         </div>
         <div></div>
     </div>
-    <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center" style="margin-top: -8%;">
-        <div *ngFor="let card of cardDeck" fxFlex="1">
-            <img src="/assets/cards/purple_back.png" class="card">
+    <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center" class="deck" style="margin-top: -8%;">
+        <div *ngFor="let card of cardDeck; let i = index;" fxFlex="1">
+            <img src="/assets/cards/purple_back.png" class="card" (click)="clickOnCardInDeck(i)">
         </div>
     </div>
     <div fxFlex="10">
